@@ -10,8 +10,6 @@ var bcrypt = require('bcryptjs');
 
 module.exports = {
 
-  schema: true,
-
   attributes: {
     email: {
       type: 'email',
@@ -21,6 +19,14 @@ module.exports = {
 
     encryptedPassword: {
       type: 'string'
+    },
+    roles: {
+      collection: 'roles',
+      via: 'users'
+    },
+    activities: {
+      collection: 'activities',
+      via: 'users'
     },
     // We don't wan't to send back encrypted password either
     toJSON: function() {

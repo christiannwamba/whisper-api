@@ -40,7 +40,7 @@ module.exports = {
           res.json({
             user: user,
             token: jwt.issue({
-              id: user.id
+              user: user
             })
           });
         }

@@ -49,12 +49,15 @@ module.exports.policies = {
   // feed : ['isNiceToAnimals', 'hasRabbitFood']
   // }
 
-  '*': ['isAuthorized'], // Everything resctricted here
+  '*': false, // Everything resctricted here
   'api/UsersController': {
     'create': true // We dont need authorization here, allowing public access
   },
 
   'api/AuthController': {
     '*': true // We dont need authorization here, allowing public access
+  },
+  'api/RolesController': {
+    '*': ['isAdmin']
   }
 };

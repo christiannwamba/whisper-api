@@ -1,14 +1,7 @@
-/**
- * isAuthorized
- *
- * @description :: Policy to check if user is authorized with JSON web token
- * @help        :: See http://sailsjs.org/#!/documentation/concepts/Policies
- */
-
+var _ = require('lodash');
 module.exports = function(req, res, next) {
   //Token defaults to body,quer,param
-  var token = req.query.token || req.param(token);
-
+  var token = req.param.token || req.query.token;
 
   //If it exists in the header, use it
   if (req.headers && req.headers.authorization) {
@@ -36,13 +29,24 @@ module.exports = function(req, res, next) {
       if (err) return res.json(401, {
         err: 'Invalid Token!'
       });
-      req.token = token; // This is the decrypted token or the payload you provided
-      next();
+      Users.find({
+        id: token.user.id
+      }).populate('roles').then(function(user) {
+        req.roles = user.roles; req.token = token;
+        var isModerator = _.result(_.find(user[0].roles, { 'name': 'Moderator'}), 'name') === 'Moderator';
+        if (isModerator) {
+          next();
+        } else {
+          res.json(401, {
+            err: 'Unauthorized: You are not a Moderator'
+          });
+        }
+
+      });
     });
   } else {
     return res.json(401, {
       err: 'No token found'
     });
   }
-
 };
