@@ -52,10 +52,11 @@ module.exports.connections = {
   //Used in sails.config.env.production
   remoteMysqlServer: {
     adapter: 'sails-mysql',
-    host: 'mysql://us-cdbr-iron-east-03.cleardb.net?reconnect=true',
+    host: 'us-cdbr-iron-east-03.cleardb.net',
     user: 'b813f4b29c6f95',
     password: '679e67fd',
-    database: 'heroku_3b4a284406d4f11'
+    database: 'heroku_3b4a284406d4f11',
+    reconnect:true
   },
 
   /***************************************************************************
